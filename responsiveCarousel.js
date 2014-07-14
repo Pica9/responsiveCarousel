@@ -52,7 +52,7 @@
 				// .crsl-items
 				$(obj).css({ width: '100%' });
 				// .crls-item
-				$(obj).find('.crsl-item').css({ position: 'relative', float: 'left', overflow: 'hidden', height: 'auto' });
+				$(obj).find('.crsl-item').css({ position: 'relative', "float": 'left', overflow: 'hidden', height: 'auto' });
 				// .crsl-item > images with full width
 				$(obj).find('.'+defaults.imageWideClass).each( function(){
 					$(this).css({ display: 'block', width: '100%', height: 'auto' });
