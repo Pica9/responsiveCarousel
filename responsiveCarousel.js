@@ -50,7 +50,7 @@
 				defaults.endCoords = {};
 
 				// .crsl-items
-				$(obj).css({ width: '100%' });
+				$(obj).css({ width: '340px', 'margin-left': '14px','margin-right': '20px' });
 				// .crls-item
 				$(obj).find('.crsl-item').css({ position: 'relative', "float": 'left', overflow: 'hidden', height: 'auto' });
 				// .crsl-item > images with full width
@@ -254,11 +254,22 @@
 			obj.previous = function(){
 				obj.wrapMargin = defaults.infinite ? obj.wrapMarginDefault + $(obj.itemActive).outerWidth(true) : obj.wrapMargin + $(obj.itemActive).outerWidth(true);
 				var prevItemIndex = $(obj.itemActive).index();
-				var newItemActive = $(obj.itemActive).prev('.crsl-item');
+				var newItemActive = $(obj.itemActive).prev('.crsl-item').prev('.crsl-item');
 				var action = 'previous';
 				// Trigger Begin Carousel Move
 				$(obj).trigger('beginCarousel', [defaults, obj, action]);
 				// Animate
+                
+                //prevent white space when clicking prev
+                //also allow to go back by 3 images
+                for (var i = 0; i < 2; i++) { 
+                    if(obj.wrapMargin + $(obj.itemActive).outerWidth(true) < 0){
+                        obj.wrapMargin = obj.wrapMargin + $(obj.itemActive).outerWidth(true);
+                    }else{
+                        obj.wrapMargin = 0;
+                    }
+                }
+                //obj.wrapMargin = obj.wrapMargin + obj.wrapMargin*(-2)
 				$(obj).
 					find('.crsl-wrap').
 					animate({ marginLeft: obj.wrapMargin+'px' }, defaults.speed, function(){
@@ -281,12 +292,17 @@
 			// Next Animate
 			obj.next = function(){
 				obj.wrapMargin = defaults.infinite ? obj.wrapMarginDefault - $(obj.itemActive).outerWidth(true) : obj.wrapMargin - $(obj.itemActive).outerWidth(true);
-				var nextItemIndex = $(obj.itemActive).index();
-				var newItemActive = $(obj.itemActive).next('.crsl-item');
+				
+                //also allow to go ahead by 3 images
+                for (var i = 0; i < 2; i++) { 
+                    obj.wrapMargin = obj.wrapMargin - $(obj.itemActive).outerWidth(true);
+                }
+				var newItemActive = $(obj.itemActive).next('.crsl-item').next('.crsl-item');
 				var action = 'next';
 				// Trigger Begin Carousel Move
 				$(obj).trigger('beginCarousel', [defaults, obj, action]);
 				// Animate
+                //console.log ('Margin width', obj.wrapMargin+'px');
 				$(obj).
 					find('.crsl-wrap').
 					animate({ marginLeft: obj.wrapMargin+'px' }, defaults.speed, function(){
